@@ -5,7 +5,7 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.titulo}>Vitrine</Text>
       <Text style={styles.subtitulo}>
-        Seu nome — Dispositivos Móveis 2026
+        Igor — Dispositivos Móveis 2026
       </Text>
       <StatusBar style="auto" />
     </View>
