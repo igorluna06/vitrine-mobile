@@ -1,26 +1,27 @@
+import { memo } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { Produto } from '@/types/produto';
 interface CardProdutoProps {
   produto: Produto;
   favorito: boolean;
   aoAlternarFavorito: (id: number) => void;
-  aoAbrir?: () => void;
+  aoAbrir: (id: number) => void;
 }
-    export function CardProduto({
-       produto,
+function CardProdutoBase({
+  produto,
   favorito,
   aoAlternarFavorito,
   aoAbrir,
 }: CardProdutoProps) {
   return (
     <View className="flex-row items-center gap-3 bg-slate-100
-                     dark:bg-superficie rounded-card p-3 mb-3">
+                     dark:bg-superficie rounded-card p-3">
       <Image
         source={{ uri: produto.thumbnail }}
         className="w-16 h-16 rounded-lg bg-slate-200 dark:bg-fundo"
       />
       <Pressable
-        onPress={aoAbrir}
+        onPress={() => aoAbrir(produto.id)}
         className="flex-1 active:opacity-70"
         accessibilityRole="button"
         accessibilityLabel={`Abrir ${produto.title}`}
@@ -38,8 +39,7 @@ interface CardProdutoProps {
           R$ {produto.price.toFixed(2)}
         </Text>
       </Pressable>
-      <Pressable
-        onPress={() => aoAlternarFavorito(produto.id)}
+      <Pressable onPress={() => aoAlternarFavorito(produto.id)}
         accessibilityRole="button"
         accessibilityLabel={
           favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'
@@ -53,3 +53,5 @@ interface CardProdutoProps {
     </View>
   );
 }
+// só redesenha quando alguma prop muda de verdade
+export const CardProduto = memo(CardProdutoBase);

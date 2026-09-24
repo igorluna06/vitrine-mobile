@@ -1,17 +1,18 @@
 import { Image, ScrollView, Text, View } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { PRODUTOS } from '@/constants/produtos';
+import { PRODUTOS_TESTE } from '@/utils/gerarProdutos';
 export default function DetalheProduto() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  // parâmetro de rota é sempre texto — converta antes de comparar
-  const produto = PRODUTOS.find((p) => p.id === Number(id));
+  // parâmetro de rota é sempre texto — converta antes de comparar.
+  // Busca na mesma lista do catálogo: em PRODUTOS só existem os ids 1 a 4.
+  const produto = PRODUTOS_TESTE.find((p) => p.id === Number(id));
   if (!produto) {
     return (
       <View className="flex-1 bg-white dark:bg-fundo items-center justify-center p-4">
         <Text className="text-slate-900 dark:text-white text-center">
           Produto não encontrado.
         </Text>
-     </View>
+      </View>
     );
   }
   return (
@@ -40,5 +41,5 @@ export default function DetalheProduto() {
         </Text>
       </View>
     </ScrollView>
-  );
-}
+  )
+} 
