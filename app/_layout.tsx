@@ -1,42 +1,34 @@
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import '../global.css';
+import { useEffect } from 'react';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { BotaoTema } from '@/components/BotaoTema';
 import { CORES_NAVEGACAO } from '@/constants/tema';
-export default function LayoutAbas() {
-  const { colorScheme } = useColorScheme();
+export default function LayoutRaiz() {
+  const { colorScheme, setColorScheme } = useColorScheme();
   const cores = CORES_NAVEGACAO[colorScheme === 'dark' ? 'dark' : 'light'];
+   useEffect(() => {
+    setColorScheme(colorScheme ?? 'light');
+  }, []);
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: cores.destaque,
-        tabBarInactiveTintColor: cores.inativo,
-        tabBarStyle: { backgroundColor: cores.fundo, borderTopColor: cores.borda },
-        headerStyle: { backgroundColor: cores.fundo },
-        headerTintColor: cores.texto,
-        headerRight: () => <BotaoTema />,
-        // NOVO: fundo das telas das abas, nos dois temas
-        sceneStyle: { backgroundColor: cores.fundo },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Catálogo',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="grid-outline" color={color} size={size} />
-          ),
+    <>
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: cores.fundo },
+          headerTintColor: cores.destaque,
+          headerTitleStyle: { color: cores.texto },
+          contentStyle: { backgroundColor: cores.fundo },
         }}
-      />
-      <Tabs.Screen
-        name="favoritos"
-        options={{
-          title: 'Favoritos',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="star-outline" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* NOVO: o grupo de autenticação, sem o cabeçalho da pilha */}
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="produto/[id]"
+          options={{ title: 'Detalhe do produto' }}
+        />
+      </Stack>
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+    </>
   );
 }
